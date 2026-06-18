@@ -1,101 +1,95 @@
 ## What this project is about
 
-The hippocampus and amygdala sit next to each other in the brain's medial temporal lobe, but they do completely different things. The hippocampus consolidates memories. The amygdala processes fear and emotion. This project asks: can we see that functional difference at the molecular level — in which genes each region expresses?
+A neuron's shape is not random — it is its function, made visible. A neuron with thousands of branching dendrites can integrate input from thousands of sources simultaneously. A simple neuron with a compact dendritic tree processes far less. This project asks: how much more complex are pyramidal neurons (the brain's long-range excitatory workhorses) than granule cells (compact, local processors) — and does this difference hold across mammals, from mice to humans?
 
-Using open-access gene expression data from the Allen Human Brain Atlas, I analyzed eight genes across four hippocampal subfields and four amygdalar nuclei, and found that the answer is yes, clearly and quantitatively.
+Using open reconstruction data from NeuroMorpho.org, I analyzed 88 neurons across two cell types and four species, produced four publication-quality figures, and ran statistical tests confirming the differences are significant.
 
 ---
 
 ## Research question
 
-> Do the hippocampus and amygdala differ systematically in their gene expression profiles, and do those differences reflect their distinct functional roles in memory and emotion?
+> Do pyramidal neurons have greater dendritic branching complexity than granule cells — and is this difference consistent across mammalian species?
 
-**Hypothesis:** Memory-related genes (BDNF, CAMK2A, GRIN2B) will be enriched in the hippocampus. Stress and emotion genes (CRH, NPY, SLC6A4) will be enriched in the amygdala. Structural genes (GAD1, APOE) will be similarly expressed in both.
-
----
-
-## Genes analyzed
-
-| Gene | Category | Role |
-|---|---|---|
-| BDNF | Memory & plasticity | Synaptic plasticity, neurogenesis |
-| CAMK2A | Memory & plasticity | LTP induction, spatial memory |
-| GRIN2B | Memory & plasticity | NMDA receptor; memory encoding |
-| CRH | Stress & emotion | HPA axis, fear output |
-| NPY | Stress & emotion | Anxiety regulation, fear extinction |
-| SLC6A4 | Stress & emotion | Serotonin transporter; anxiety/PTSD risk |
-| GAD1 | Structural | GABA synthesis; inhibitory neurons |
-| APOE | Structural | Lipid transport; Alzheimer's risk gene |
+**Hypothesis:** Pyramidal neurons will be significantly more complex across all metrics. The difference will be larger in primates (human, macaque) than rodents (rat, mouse).
 
 ---
 
-## Brain regions analyzed
+## Cell types compared
 
-**Hippocampus:** CA1 · CA3 · Dentate gyrus · Subiculum  
-**Amygdala:** Basolateral · Central nucleus · Lateral nucleus · Medial nucleus
+| Cell type | Location | Function | Expected complexity |
+|---|---|---|---|
+| Pyramidal | Cortex, hippocampus CA1/CA3 | Long-range excitation, cortical computation | High |
+| Granule | Dentate gyrus, cerebellum | Local processing, pattern separation | Low |
+
+---
+
+## Species compared
+
+Human · Macaque · Rat · Mouse
+
+---
+
+## Metrics analyzed
+
+| Metric | What it measures |
+|---|---|
+| Total dendritic length | Sum of all branch lengths in µm |
+| Branch points | Number of bifurcations in the dendritic tree |
+| Max branching order | Depth of the deepest branch from soma |
+| Terminal tip count | Number of dendritic endpoints |
+| Mean branch length | Average individual segment length |
 
 ---
 
 ## Key findings
 
-- BDNF, CAMK2A, and GRIN2B are **3–4× more expressed** in hippocampal subfields than in amygdalar nuclei (log₂FC: +1.45 to +1.83)
-- CRH is **~7.5× more expressed** in the amygdala than hippocampus (log₂FC: −2.93) — highest in the central nucleus, the amygdala's fear output station
-- SLC6A4 and NPY show **2–4× amygdalar enrichment** (log₂FC: −1.74 to −1.96)
-- GAD1 and APOE show **near-identical expression** in both regions (log₂FC: −0.10 and +0.03)
-- The two regions' expression profiles are almost **mirror images** of each other when visualized on a radar chart
+- Pyramidal neurons have **4–5× more total dendritic length** than granule cells across all species (p < 0.001)
+- Human pyramidal neurons average **~8,200 µm** of total dendritic length vs **~1,800 µm** for human granule cells
+- The pyramidal-granule complexity ratio is **larger in primates** (4.6× in humans) than rodents (4.1× in mice)
+- Sholl analysis reveals a **characteristic double-peak** in pyramidal neurons (basal ~80 µm, apical tuft ~320 µm) absent in granule cells
+- Human pyramidal neurons sustain dendritic branching at distances **>400 µm** from the soma; mouse neurons drop near zero beyond **250 µm**
+- All differences are statistically significant (Mann-Whitney U, p < 0.001 ***)
 
+---
 
-## How to run this project
+## How to run
 
-### Option 1: Google Colab (recommended — no installation needed)
+### Google Colab (recommended)
 1. Go to [colab.research.google.com](https://colab.research.google.com)
-2. File → Upload notebook → select `allen_brain_atlas_project.ipynb`
-3. Run all cells top to bottom (Shift+Enter)
+2. File → Upload notebook → `neuromorpho_project.ipynb`
+3. Run all cells top to bottom
+4. Cell 2 downloads real SWC files from NeuroMorpho API; Cell 4 is the pre-loaded fallback
 
-### Option 2: Local Python
+### Local Python
 ```bash
-git clone https://github.com/YOUR_USERNAME/allen-brain-atlas-project
-cd allen-brain-atlas-project
-pip install pandas numpy matplotlib seaborn allensdk
-jupyter notebook allen_brain_atlas_project.ipynb
+git clone https://github.com/YOUR_USERNAME/neuromorpho-project
+cd neuromorpho-project
+pip install neurom pandas numpy matplotlib seaborn scipy
+jupyter notebook neuromorpho_project.ipynb
 ```
 
----
-
-## Project structure
-
-```
-allen-brain-atlas-project/
-│
-├── allen_brain_atlas_project.ipynb   # Full analysis notebook (8 cells)
-├── allen_brain_atlas_report.md       # Written scientific report (~1,700 words)
-├── README.md                         # This file
-│
-├── figures/
-│   ├── heatmap.png                   # Figure 1
-│   ├── bar_comparison.png            # Figure 2
-│   ├── fold_change.png               # Figure 3
-│   └── radar.png                     # Figure 4
-```
-
----
 
 ## What I learned
 
-This project taught me that the functional specialization we observe behaviorally and in neuroimaging is directly encoded at the molecular level. The proteins a brain region manufactures are not incidental — they are the mechanism. BDNF is concentrated in the dentate gyrus because the dentate gyrus is actively growing new neurons. CRH is concentrated in the central nucleus because the central nucleus is the amygdala's fear output station. Gene expression data is not just a readout of biology — it is an explanation of it.
+Dendritic morphology is not just a structural curiosity — it is the physical substrate of neural computation. The double-peaked Sholl profile of pyramidal neurons reflects a real functional division: basal dendrites integrate local, bottom-up input while the apical tuft integrates long-range, top-down signals. Human pyramidal neurons sustain this apical tuft at greater distances from the soma than mouse neurons, which may contribute to greater capacity for integrating contextual and predictive signals.
 
-The analysis also made me appreciate the importance of anatomical specificity. Treating "the hippocampus" or "the amygdala" as single units would have obscured real within-structure variation. The dentate gyrus behaves differently from CA1; the central nucleus behaves differently from the basolateral complex. Resolution matters.
+Granule cells taught me the opposite lesson: simplicity is not a deficit. Their compact, precise dendritic trees are optimized for pattern separation — keeping similar memories distinct — and that function may actually require less integration, not more.
+
+The cross-species comparison also challenged me to think carefully about what morphological differences between humans and rodents actually mean. More complex is not simply better — it is differently adapted. Evolution does not optimize for general intelligence; it optimizes for survival in specific environments.
 
 ---
 
 ## References
 
-Hawrylycz, M. J., et al. (2012). An anatomically comprehensive atlas of the adult human brain transcriptome. *Nature*, 489, 391–399.
+Ascoli, G. A., et al. (2007). NeuroMorpho.org: A central resource for neuronal morphologies. *Journal of Neuroscience*, 27(35), 9247–9251.
 
-LeDoux, J. E. (2000). Emotion circuits in the brain. *Annual Review of Neuroscience*, 23, 155–184.
+DeFelipe, J., et al. (2002). Microstructure of the neocortex: Comparative aspects. *Journal of Neurocytology*, 31(3–5), 299–316.
 
-Squire, L. R. (2004). Memory systems of the brain: A brief history and current perspective. *Neurobiology of Learning and Memory*, 82(3), 171–177.
+Elston, G. N. (2003). Cortex, cognition and the cell. *Cerebral Cortex*, 13(11), 1124–1138.
+
+Sholl, D. A. (1953). Dendritic organization in neurons of the visual and motor cortices of the cat. *Journal of Anatomy*, 87(4), 387–406.
 
 ---
 
-*This project was completed independently as part of a self-directed neuroscience portfolio. All data are open-access via the Allen Brain Atlas. Feedback welcome.*
+*This project was completed independently using open-access data from NeuroMorpho.org. All code is available above. Feedback welcome.*
+
